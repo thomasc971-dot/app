@@ -1,0 +1,27 @@
+{
+  "summary": "Iteration 2 regression test after frontend-only UX/UI refonte. Backend: all 17 pytest tests pass (100%). Frontend: home hero with 3D illustration /img/hero-clay.png + floating cards (100 métiers racontés, Budget réel) + handwritten annotation 'essaie-le, pour de vrai' all render correctly. Logo image /img/logo.jpg visible in header. Footer has 4 columns (Explorer / projet / Rester en lien) + email hello@moidemain.fr. Experience cards 0/1/2 present. CTAs point to /trouve-ta-voie and /metiers. Mini-simulation: Paris↔Lyon changes reste-à-vivre (Paris 1134€ vs Lyon 1155€, logement Paris 446€ vs Lyon 425€) — integration OK. /metiers shows 100 cards, filter+search work. /metiers/tech-developpeurse-web renders (h1 'Développeur·se web', salaire, missions). /trouve-ta-voie quiz 4-step flow works, résultat + bouton Refaire affichés. /simulation shows 3 config blocks + navy fiche with coherent numbers (2080€ salaire, -500€ logement, -425€ vie courante, 1155€ reste).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Simulation page", "issues": ["React hydration console warning: <span> injected inside <option> by devtools instrumentation (x-ve-dynamic wrappers). Non-blocking but polluting console. Consider stripping in prod build or bypassing option children instrumentation."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Console: 'In HTML, <span> cannot be a child of <option>' hydration warning on /simulation — from dev instrumentation wrapping option children. Cosmetic in dev, but any real <span> inside <option> would break SSR.",
+    "Floating card label is 'MÉTIERS RACONTÉS' not '100 métiers' as described in review request — non-issue but review checklist wording was inaccurate."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (17/17)", "frontend": "100% of tested flows"},
+  "test_credentials": "none required",
+  "seed_data_creation": "none - reused seeded DB (100 métiers, 12 secteurs)",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "backend_test.py has 17 tests, all pass. Frontend regression covered: home, /metiers, /metiers/:slug, /trouve-ta-voie (quiz 4 questions), /simulation, minisim ville change. Home hero uses /img/hero-clay.png + /img/logo.jpg. Data-testids verified: logo-link, hero, hero-cta-primary/secondary, exp-card-0/1/2, raison-detre, minisim, ressources-home, final-cta, final-cta-btn, site-footer, sim-metier. Quiz options use plain <button> without quiz-option-* testid — future tests should target buttons in main/section scope."
+}

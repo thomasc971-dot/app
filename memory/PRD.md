@@ -1,80 +1,79 @@
-# Moi Demain — Product Requirements Document (V1)
+# Moi Demain — PRD (V1.2)
 
-## Original problem statement (résumé)
-Refonte UX/UI complète de "Moi Demain", plateforme française d'orientation professionnelle intergénérationnelle (13-25 ans, étudiants, jeunes actifs, salariés, reconversion). Reconstruction en React + FastAPI + MongoDB à partir du HTML v145 (source de vérité). Direction UX/UI éditoriale/premium/humaine inspirée à 80% du prototype 1 (authentic-ui-1), à 20% du prototype 2 (future-path-app-2).
+## Statut
+V1 livrée. V1.1 (2026-02-27) : ajustements UX/UI post-feedback utilisateur.
 
 ## Architecture
-- **Frontend**: React 19 + Tailwind + Framer Motion + shadcn/ui + React Router v7
-- **Backend**: FastAPI + Motor (MongoDB async)
-- **Data**: 100 métiers extraits du HTML v145 → MongoDB seedé au démarrage via `source_data.json`
-- **Design System**:
-  - Palette: Navy #1E3A8A (dominante) / Brick #B85C5C (accent) / Cream #FAF8F5 (fond) / Teal secondaire discret
-  - Typo: Fraunces (titres + italique expressif) / Manrope (corps) / Caveat (logo "moi")
-  - Composants: floating cards (rounded 2rem), pill filters, timeline éditoriale, accordions, split hero éditorial
+React 19 + Framer Motion + shadcn/ui + Tailwind + FastAPI + MongoDB + Motor.
+
+## Palette & typo (verrouillées)
+Navy #1E3A8A (dominante), Brick #B85C5C (accent parcimonieux), Cream #FAF8F5 (fond).
+Fraunces (titres + italique expressif), Manrope (corps), Caveat (script pour annotations manuscrites + tagline logo).
+
+## Assets
+- `/img/logo.jpg` — logo officiel Moi Demain fourni par l'utilisateur (recadré 1407×649)
+- `/img/hero-clay.png` — illustration 3D clay intergénérationnelle (père + adolescent + adolescente)
+- `/backend/source_data.json` — 100 métiers + 12 secteurs + 20 blocs de référence extraits du HTML v145
 
 ## User personas
-- Ado/collégien qui découvre l'orientation
-- Lycéen/étudiant qui cherche sa voie
-- Jeune actif qui doute
-- Salarié qui envisage reconversion
-- Curieux intergénérationnel
+Ado / lycéen / étudiant / jeune actif qui doute / salarié en reconversion / curieux intergénérationnel.
 
-## Core requirements (statiques)
-1. Contenu 100% conservé (métiers, secteurs, quiz, simulation, ressources du HTML v145)
-2. Palette bleu marine + rouge brique + crème verrouillée
-3. Fraunces + Manrope verrouillées
-4. Aucune intégration tierce en V1 (architecture prête pour auth/LLM plus tard)
-5. Mobile-first réel (375/390/768/1024/1440+)
-6. Positionnement intergénérationnel visible dans images/textes
-7. Ton humain "je découvre" vs "base de données"
-
-## What's implemented (2026-02-27)
-### Backend (FastAPI + MongoDB)
-- ✅ Seed automatique depuis `source_data.json` (100 métiers, 12 secteurs, 20+ blocs de référence)
-- ✅ `/api/` — statut
-- ✅ `/api/secteurs` — 12 secteurs avec compte de métiers
-- ✅ `/api/metiers` — liste filtrée (secteur, recherche texte) + pagination
-- ✅ `/api/metiers/{slug}` — fiche détaillée + 6 métiers reliés du même secteur
-- ✅ `/api/reference/{key}` — TTV_QUIZ, MINISIM_DATA, FAQ, AIDES, etc.
-- ✅ `/api/simulation/preview` — calcul budget mini
-- ✅ `/api/ressources` — aides + FAQ
-- ✅ 17/17 tests backend passent (voir `/app/backend/tests/backend_test.py`)
+## Ce qui est implémenté (V1.1, 2026-02-27)
+### Backend
+- ✅ Seed automatique 100 métiers + 12 secteurs + 17 aides + 5 FAQ + tables de référence
+- ✅ 7 endpoints REST : `/api/`, `/api/secteurs`, `/api/metiers` (filtrable/recherche), `/api/metiers/{slug}`, `/api/reference/{key}`, `/api/simulation/preview`, `/api/ressources`
+- ✅ 17/17 tests pytest passent (regressed testé 2 fois)
 
 ### Frontend
-- ✅ **Logo** custom (Caveat "moi" + Manrope "demain" + point brick)
-- ✅ **Header** sticky glassmorphism + menu mobile
-- ✅ **Homepage**: Hero éditorial (2 photos + floating stat card), 3 entrées expériences (Simulation / Trouve ta voie / Annuaire), Raison d'être en navy avec photos, Mini-simulation live, Ressources cards, CTA final navy
-- ✅ **Annuaire métiers**: recherche, filtres pill par secteur, grille cards (nom Fraunces, salaire, mots-clés, tension marché)
-- ✅ **Fiche métier**: hero + sidebar sticky (salaire/tension/marché), timeline "Une journée au quotidien" avec accroche italique, imprévu en brick, missions grid, accordions (compétences, études, évolution, contexte, variabilité), métiers reliés
-- ✅ **Trouve ta voie**: quiz 4 questions avec progress bar + résultat profil RIASEC + secteurs recommandés
-- ✅ **Simulation**: 3 blocs config (métier / ville / rythme) + fiche résultat navy sticky avec calcul en direct
-- ✅ **Ressources & À propos**: placeholders navigables cohérents avec le Design System
-- ✅ **Footer**
+- ✅ **Logo image officiel** dans header et footer (avec mix-blend-mode multiply pour se fondre sur cream)
+- ✅ **Header** sticky glassmorphism + menu mobile hamburger
+- ✅ **Homepage** :
+  - Hero avec illustration 3D clay intergénérationnelle + 2 cartes flottantes (100 métiers / Budget réel) + annotation manuscrite Caveat "essaie-le, pour de vrai"
+  - Section 3 expériences (Navy / Brick / Blanc avec halo au hover)
+  - Notre raison d'être en Navy avec 2 photos éditoriales (femme au tableau + reconversion) + annotation manuscrite "à tout âge"
+  - Mini-simulation LIVE (métier + ville → salaire net + budget + reste à vivre) avec badge "Live"
+  - Ressources 3 cartes
+  - CTA final avec annotation manuscrite "on t'attend"
+- ✅ **Footer 4 colonnes** : brand + tagline manuscrit "Explorer. Décider. Construire demain." / Explorer / Le projet / Rester en lien (email + réseaux sociaux) + signature "à demain 👋"
+- ✅ **Annuaire métiers** : recherche + filtres pill par secteur + 100 cartes floating (nom Fraunces, salaire, mots-clés, tension marché)
+- ✅ **Fiche métier** : hero + sidebar sticky (salaire/tension/marché) + timeline "Une journée au quotidien" avec accroche italique + imprévu en brick + missions grid + accordions (compétences/études/évolution/contexte/variabilité) + 6 métiers reliés + décodage HTML entités
+- ✅ **Trouve ta voie** : quiz 4 questions avec progress bar + profil RIASEC + secteurs recommandés + refaire
+- ✅ **Simulation** : 3 blocs config (métier / ville / rythme fourmi-équilibre-cigale) + fiche résultat navy sticky avec breakdown en direct
+- ✅ **Ressources & À propos** : placeholders navigables cohérents avec DS
+- ✅ **Micro-interactions** : hover lift sur cartes, arrow slide, image hover-scale, halo au survol des experience cards, entrance animations décalées
 
-## Backlog / non fait en V1
-### P1 (prochaine itération)
-- Enrichir Ressources : fiches paie détaillées, guide bourses, expatriation (contenu du HTML v145 déjà en base via `/api/reference`)
-- Formations & établissements : pages annuaire complètes (données déjà seedées)
-- Simulation carrière complète (7-9 étapes narratives, aléas, bilan final chiffré)
-- Ajouter un vrai `quiz de compatibilité` par métier (données QUIZ_METIER déjà en base)
+### Design System
+- Espacements réduits (py-16 md:py-24 au lieu de py-24 md:py-32) pour éviter l'effet "vide magazine"
+- Fraunces italic léger pour mise en valeur ponctuelle
+- Annotations manuscrites Caveat éparses (hero, raison-d'être, CTA final, footer)
+- Radius 1.75rem (cards) / 2rem (grand blocs) / rounded-full (buttons/badges)
+- Ombres douces navy 8% / 12% / 25%
+
+## Backlog V2
+### P1
+- Enrichir Ressources : longs formats fiche de paie / bourses / expatriation (data déjà dans `/api/reference`)
+- Formations & Établissements : pages annuaire (data seedée)
+- Simulation carrière narrative complète (7-9 étapes + aléas + bilan final chiffré)
+- Quiz de compatibilité par métier (data QUIZ_METIER déjà en base)
 - Recherche globale multi-collections
 
 ### P2
 - Compte utilisateur (JWT ou Google Auth Emergent) + sauvegarde parcours/favoris
-- Éventuellement IA d'orientation (Claude Sonnet) branchée sur les vraies données Moi Demain
-- Partage sur réseaux sociaux d'un résultat de simulation
+- IA d'orientation (Claude Sonnet) branchée sur les vraies données Moi Demain
+- Partage résultats simulation
 - Fiche métier PDF exportable
 
-## Files touched
+## Test credentials
+Aucun compte utilisateur en V1. Site en accès libre.
+
+## Fichiers principaux
 - `/app/backend/server.py` — API + seed
-- `/app/backend/source_data.json` — 825 KB de données extraites du HTML v145
-- `/app/frontend/src/App.js` — router
-- `/app/frontend/tailwind.config.js` — tokens design system (fonts, colors, radius)
-- `/app/frontend/src/index.css` — fonts Google + CSS vars
-- `/app/frontend/src/lib/api.js` — client axios
+- `/app/backend/source_data.json` — 825 KB données HTML v145
+- `/app/backend/tests/backend_test.py` — 17 tests
+- `/app/frontend/src/App.js`
+- `/app/frontend/tailwind.config.js`
+- `/app/frontend/src/index.css`
+- `/app/frontend/src/lib/api.js`
 - `/app/frontend/src/components/{Logo,Header,Footer}.jsx`
 - `/app/frontend/src/pages/{Home,Metiers,MetierDetail,TrouveTaVoie,Simulation,Placeholder}.jsx`
-- `/app/backend/tests/backend_test.py` — 17 tests pytest
-
-## Test credentials
-Aucun compte utilisateur en V1. Site navigable en accès libre.
+- `/app/frontend/public/img/{logo.jpg,hero-clay.png}`
