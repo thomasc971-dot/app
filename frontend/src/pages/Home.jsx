@@ -85,12 +85,12 @@ const Hero = () => (
             </div>
           </div>
         </motion.div>
-        {/* Floating card 2 — right-middle */}
+        {/* Floating card 2 — bottom-right, hors du personnage */}
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: 30, y: 10 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
           transition={{ delay: 0.7, duration: 0.7 }}
-          className="absolute top-[42%] right-0 lg:-right-2 z-20 bg-navy text-cream rounded-2xl px-4 py-3 shadow-[0_15px_40px_rgba(30,58,138,0.25)] hover:-translate-y-1 transition-transform duration-300"
+          className="absolute bottom-8 right-0 lg:-right-4 z-20 bg-navy text-cream rounded-2xl px-4 py-3 shadow-[0_15px_40px_rgba(30,58,138,0.25)] hover:-translate-y-1 transition-transform duration-300"
         >
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-brick/30 flex items-center justify-center"><Wallet size={16} className="text-brick-soft" /></div>
@@ -100,12 +100,12 @@ const Hero = () => (
             </div>
           </div>
         </motion.div>
-        {/* Handwritten annotation — bottom */}
+        {/* Handwritten annotation — bottom-left */}
         <motion.div
           initial={{ opacity: 0, rotate: -8, scale: 0.8 }}
           animate={{ opacity: 1, rotate: -6, scale: 1 }}
           transition={{ delay: 0.9, duration: 0.7 }}
-          className="absolute bottom-6 left-6 z-20 pointer-events-none"
+          className="absolute -bottom-2 left-2 lg:left-8 z-20 pointer-events-none"
         >
           <span className="font-script text-brick text-3xl md:text-4xl">essaie-le, pour de vrai</span>
           <svg className="text-brick/70 -mt-2 ml-4" width="80" height="12" viewBox="0 0 80 12" fill="none">
