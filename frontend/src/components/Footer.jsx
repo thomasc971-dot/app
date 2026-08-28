@@ -23,6 +23,7 @@ export const Footer = () => (
           <ul className="space-y-2.5 font-body text-sm text-navy/70">
             <li><Link className="hover:text-navy transition-colors" data-testid="footer-simulation" to="/simulation">Simulation</Link></li>
             <li><Link className="hover:text-navy transition-colors" data-testid="footer-ttv" to="/trouve-ta-voie">Trouve ta voie</Link></li>
+            <li><Link className="hover:text-navy transition-colors" data-testid="footer-immersion" to="/immersion">Immersion pro</Link></li>
             <li><Link className="hover:text-navy transition-colors" data-testid="footer-metiers" to="/metiers">Annuaire métiers</Link></li>
             <li><Link className="hover:text-navy transition-colors" data-testid="footer-ressources" to="/ressources">Ressources</Link></li>
           </ul>

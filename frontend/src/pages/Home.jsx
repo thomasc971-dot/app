@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowUpRight, Compass, Sparkles, Building2, ArrowRight, PlayCircle, Wallet, TrendingUp, Star } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, Compass, Sparkles, Users, ArrowRight, PlayCircle, Wallet, TrendingUp, Star } from "lucide-react";
 import { fetchMetiers, fetchSimPreview } from "../lib/api";
 
 const IMG = {
@@ -19,6 +19,32 @@ const fadeUp = {
   transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
 };
 
+const ROTATING_VERBS = ["essaie", "imagine", "invente", "explore"];
+
+const RotatingWord = () => {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setI(v => (v + 1) % ROTATING_VERBS.length), 2200);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <span className="relative inline-block align-baseline overflow-hidden" style={{ minWidth: "5.5ch" }}>
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={ROTATING_VERBS[i]}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="fraunces-italic inline-block"
+        >
+          {ROTATING_VERBS[i]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+};
+
 // ============= HERO =============
 const Hero = () => (
   <section data-testid="hero" className="relative overflow-hidden pt-10 pb-16 md:pt-16 md:pb-24">
@@ -30,7 +56,7 @@ const Hero = () => (
         <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-navy leading-[1.05] tracking-tight">
           Ton avenir ne se <span className="fraunces-italic text-brick">devine</span> pas.
           <br />
-          Il s'<span className="fraunces-italic">essaie</span>.
+          Il s'<RotatingWord />.
         </h1>
         <p className="font-body text-base md:text-lg text-navy/70 mt-6 max-w-xl leading-relaxed">
           Simule des métiers, des villes, un budget — pour de vrai. Un espace pour toi, que tu aies 15 ans
@@ -122,7 +148,7 @@ const ExperiencesSection = () => {
   const items = [
     { icon: Compass, title: "Simulation carrière", tag: "12 min · Aléas réalistes", desc: "Vis les grandes étapes d'une carrière : filière, premier poste, dilemme, mobilité. Bilan chiffré à la clé.", to: "/simulation", accent: "bg-navy text-cream" },
     { icon: Sparkles, title: "Trouve ta voie", tag: "2 min · Sans engagement", desc: "Un questionnaire qui s'adapte à ta situation. Perdu·e, une idée précise, ou en reconversion.", to: "/trouve-ta-voie", accent: "bg-brick text-cream" },
-    { icon: Building2, title: "Annuaire métiers", tag: "100 fiches · Sans filtre", desc: "Salaire réel, durée d'études, quotidien : l'essentiel, sans brochure qui embellit tout.", to: "/metiers", accent: "bg-white text-navy border border-navy/10" },
+    { icon: Users, title: "Immersion pro", tag: "7 étapes · Terrain", desc: "Vis le quotidien d'une entreprise, de l'intérieur : CSE, formation, mobilité, participation — et des offres réelles à la fin.", to: "/immersion", accent: "bg-white text-navy border border-navy/10" },
   ];
   return (
     <section data-testid="experiences" className="py-16 md:py-24">
