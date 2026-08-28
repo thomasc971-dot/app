@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Compass, Sparkles, Users, ArrowRight, PlayCircle, Wallet, TrendingUp, Star } from "lucide-react";
+import { ArrowUpRight, Compass, Sparkles, Users, ArrowRight, PlayCircle, Wallet, TrendingUp, Star, Target, HelpCircle, Shuffle } from "lucide-react";
 import { fetchMetiers, fetchSimPreview } from "../lib/api";
 
 const IMG = {
@@ -264,9 +264,9 @@ const RaisonDetre = () => (
 const ProfilEntry = () => {
   const [prenom, setPrenom] = useState("");
   const profils = [
-    { key: "idee", emoji: "🎯", titre: "Je sais déjà", desc: "J'ai une idée assez précise en tête", to: "/trouve-ta-voie" },
-    { key: "perdu", emoji: "🤷", titre: "Aucune idée", desc: "Et ça me questionne, franchement", to: "/trouve-ta-voie" },
-    { key: "depend", emoji: "🎲", titre: "Ça dépend des jours", desc: "Parfois oui, parfois plus du tout", to: "/trouve-ta-voie" },
+    { key: "idee", icon: Target, titre: "Je sais déjà", desc: "J'ai une idée assez précise en tête", to: "/trouve-ta-voie" },
+    { key: "perdu", icon: HelpCircle, titre: "Aucune idée", desc: "Et ça me questionne, franchement", to: "/trouve-ta-voie" },
+    { key: "depend", icon: Shuffle, titre: "Ça dépend des jours", desc: "Parfois oui, parfois plus du tout", to: "/trouve-ta-voie" },
   ];
   return (
     <section data-testid="profil-entry" className="py-16 md:py-24 bg-cream-dark/40">
@@ -297,11 +297,13 @@ const ProfilEntry = () => {
           {profils.map((p, i) => (
             <motion.div key={p.key} {...fadeUp} transition={{ ...fadeUp.transition, delay: i * 0.08 }}>
               <Link
-                to={`${p.to}${prenom ? `?prenom=${encodeURIComponent(prenom)}` : ""}&profil=${p.key}`}
+                to={`${p.to}?${prenom ? `prenom=${encodeURIComponent(prenom)}&` : ""}profil=${p.key}`}
                 data-testid={`profil-${p.key}`}
-                className="group block bg-white rounded-[1.5rem] p-8 text-center border border-navy/5 hover:-translate-y-2 hover:shadow-xl hover:border-brick/20 transition-all duration-500"
+                className="group block bg-white rounded-[1.5rem] p-8 border border-navy/5 hover:-translate-y-2 hover:shadow-xl hover:border-brick/20 transition-all duration-500"
               >
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform inline-block">{p.emoji}</div>
+                <div className="w-12 h-12 rounded-full bg-brick/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <p.icon size={20} className="text-brick" />
+                </div>
                 <h3 className="font-heading text-2xl text-navy">{p.titre}</h3>
                 <p className="font-body text-sm text-navy/60 mt-3 leading-relaxed">{p.desc}</p>
                 <div className="mt-6 inline-flex items-center gap-2 font-body text-sm font-semibold text-brick opacity-0 group-hover:opacity-100 transition-opacity">

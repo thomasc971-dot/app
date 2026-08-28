@@ -1,0 +1,24 @@
+{
+  "summary": "Iteration 9 combined verification. Home.jsx ProfilEntry: confirmed 0 emojis in [data-testid=profil-entry] section, all 3 cards (profil-idee/perdu/depend) render div.w-12.h-12.rounded-full.bg-brick/10 containing lucide-react SVG (Target/HelpCircle/Shuffle). MetierDetail.jsx accordion order confirmed on /metiers/tech-developpeurse-web: 1) Études & formations, 2) Compétences techniques, 3) Évolution & rémunération, 4) Contexte & évolution du métier, 5) Variabilité selon le contexte — matches spec. Backend /api/metiers/tech-developpeurse-web returns diplome + competencesTech (5 items). Found ONE bug: clicking profil-idee redirects to /trouve-ta-voie&profil=idee (missing '?' separator) when prenom is empty.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Home.jsx ProfilEntry Link", "issue": "Malformed URL when prenom is empty: navigates to '/trouve-ta-voie&profil=idee' instead of '/trouve-ta-voie?profil=idee'. Root cause: line 300 template literal `${p.to}${prenom ? `?prenom=...` : \"\"}&profil=${p.key}` uses '&' unconditionally. Fix: use '?' when prenom empty, '&' when prenom present, e.g. `${p.to}?${prenom ? `prenom=${encodeURIComponent(prenom)}&` : ''}profil=${p.key}`.", "selector": "[data-testid=profil-idee]", "priority": "HIGH"}
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix Home.jsx line 300 Link `to` template to always use '?' as first param separator and '&' between params. Applies to all 3 profil cards (idee/perdu/depend)."
+  ],
+  "critical_code_review_comments": [
+    "Home.jsx line 300: query-string construction is buggy when prenom is empty — produces '/trouve-ta-voie&profil=idee' (invalid). Should be `?profil=...` or `?prenom=...&profil=...`."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "83%"},
+  "seed_data_creation": "none",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Home ProfilEntry rendered correctly (0 emojis, lucide icons in bg-brick/10 circles). MetierDetail accordion order is correct (diplome→skills→evol→context→variabilite). Only remaining issue: fix profil card Link URL construction in Home.jsx line 300 to produce valid query string when prenom is empty."
+}

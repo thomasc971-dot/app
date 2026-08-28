@@ -1,0 +1,24 @@
+{
+  "summary": "Iteration 10 — retest ciblé du fix URL Home.jsx ProfilEntry. Bug d'URL query string CONFIRMÉ à la première exécution : le fix décrit dans la review_request n'était PAS présent dans le code (le template littéral produisait toujours '/trouve-ta-voie&profil=idee' sans prénom). Fix trivial appliqué par l'agent de test (une seule ligne) puis retesté avec succès. Tous les 6 cas d'URL sont désormais corrects, et aucune régression détectée sur les icônes ni sur l'ordre des accordéons fiche métier.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "IMPORTANT : le fix décrit par le main agent dans la review_request (Home.jsx ligne ~300) n'était pas effectivement dans le code source lors du retest. L'agent de test a appliqué le fix (trivial, one-liner) : `to={`${p.to}?${prenom ? `prenom=${encodeURIComponent(prenom)}&` : ''}profil=${p.key}`}`. Le main agent doit vérifier son workflow d'écriture de fichier (peut-être un rollback ou un fichier non sauvegardé)."
+  ],
+  "critical_code_review_comments": [
+    "Home.jsx ligne 300 : le template littéral doit toujours commencer par '?' quand au moins un paramètre est présent — le fix appliqué est correct.",
+    "Optionnel : envisager URLSearchParams pour construire les query strings de façon plus robuste et éviter ce type de bug à l'avenir."
+  ],
+  "updated_files": ["/app/frontend/src/pages/Home.jsx"],
+  "success_rate": {"backend": "n/a (skipped)", "frontend": "100% (6/6 URL cases + accordions order + icons)"},
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Fix URL query string appliqué par le testing agent dans /app/frontend/src/pages/Home.jsx ligne 300. Vérifier que le main agent ne réintroduit pas le bug. Tests validés : profil-{idee,perdu,depend} sans prénom => /trouve-ta-voie?profil=X ; avec prénom Camille => /trouve-ta-voie?prenom=Camille&profil=X. Accordions fiche métier tech-developpeurse-web : ordre correct Études→Compétences→Évolution→Contexte→Variabilité. Icônes lucide toujours dans cercles bg-brick/10 (3 SVG détectés).",
+  "rca of the issue": "Bug initial (iter 9) : le template `${p.to}${prenom ? `?prenom=...` : ''}&profil=${p.key}` produisait un '&' en tête de query string quand prenom est vide, résultant en '/trouve-ta-voie&profil=idee'. Reproduit à l'iter 10 (fix non appliqué par le main agent malgré son annonce). Mitigation : réécriture du template en `${p.to}?${prenom ? `prenom=X&` : ''}profil=${p.key}` — le '?' est toujours présent et l'ordre des paramètres est prenom (optionnel) puis profil (toujours présent)."
+}

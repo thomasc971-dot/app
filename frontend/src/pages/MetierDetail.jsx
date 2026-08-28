@@ -97,12 +97,6 @@ export default function MetierDetail() {
         <div className="container-md max-w-4xl">
           <h2 className="font-heading text-3xl md:text-4xl text-navy mb-10">Aller <span className="fraunces-italic">plus loin</span></h2>
           <Accordion type="single" collapsible className="space-y-3">
-            {m.competencesTech?.length > 0 && (
-              <AccordionItem value="skills" className="bg-white rounded-[1.5rem] border border-navy/5 px-6">
-                <AccordionTrigger className="font-heading text-xl text-navy hover:no-underline">Compétences techniques</AccordionTrigger>
-                <AccordionContent><ul className="font-body text-navy/70 space-y-2 pt-2">{m.competencesTech.map((c, i) => <li key={i} className="flex gap-3"><Sparkles size={14} className="text-brick shrink-0 mt-1" />{decode(c)}</li>)}</ul></AccordionContent>
-              </AccordionItem>
-            )}
             {m.diplome && (
               <AccordionItem value="diplome" className="bg-white rounded-[1.5rem] border border-navy/5 px-6">
                 <AccordionTrigger className="font-heading text-xl text-navy hover:no-underline">Études & formations</AccordionTrigger>
@@ -118,6 +112,12 @@ export default function MetierDetail() {
                     {m.experience && <p className="pt-4 border-t border-navy/10"><strong className="text-navy">Expérience :</strong> {m.experience}</p>}
                   </div>
                 </AccordionContent>
+              </AccordionItem>
+            )}
+            {m.competencesTech?.length > 0 && (
+              <AccordionItem value="skills" className="bg-white rounded-[1.5rem] border border-navy/5 px-6">
+                <AccordionTrigger className="font-heading text-xl text-navy hover:no-underline">Compétences techniques</AccordionTrigger>
+                <AccordionContent><ul className="font-body text-navy/70 space-y-2 pt-2">{m.competencesTech.map((c, i) => <li key={i} className="flex gap-3"><Sparkles size={14} className="text-brick shrink-0 mt-1" />{decode(c)}</li>)}</ul></AccordionContent>
               </AccordionItem>
             )}
             {m.evolution?.length > 0 && (

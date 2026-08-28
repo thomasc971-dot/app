@@ -1,0 +1,29 @@
+{
+  "summary": "RETEST of /metiers page after iteration_6 falsely reported file not persisted. Confirmed Metiers.jsx IS persisted (152 lines, all markers present). Executed 8 frontend checks with ?nocache=1/2 - ALL PASSED.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results_detail": {
+    "filter_container_flex_wrap": "PASS - flexWrap=wrap, overflowX=visible, classes='flex flex-wrap gap-2 items-center'",
+    "max_7_visible_sectors": "PASS - Exactly 7 sector filters visible + filter-tous + filter-toggle-more",
+    "toggle_more_button_present": "PASS - 'Voir plus (5)' initial text",
+    "toggle_expand_reveals_all_12": "PASS - After click: 12 sectors visible, text becomes 'Voir moins'",
+    "no_emoji_in_filter_labels": "PASS - Labels: 'Tech & Numérique', 'Santé & Social', 'BTP & Industrie', 'Commerce & Vente', 'Agriculture & Vétérinaire', 'Artisanat & Métiers manuels', 'Fonction publique & Administration' - regex /\\p{Extended_Pictographic}/u matched nothing",
+    "no_emoji_in_card_sectors": "PASS - Card sector spans show 'Tech & Numérique' etc, no '💻'",
+    "no_emoji_in_motscles_chips": "PASS - All chips stripped",
+    "tension_badges_at_top": "PASS - 33 tension badges found, all with classes 'absolute -top-2 left-4 ... bg-brick', containing Flame SVG icon and text 'Forte demande'"
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (skipped per request)", "frontend": "100% (8/8)"},
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iteration 7 confirms all Metiers.jsx changes (stripEmoji, VISIBLE_FILTERS=7, filter-toggle-more, tension-badge with Flame icon, flex-wrap container) are working correctly on the live URL. Iteration_6 report was erroneous (likely browser/CDN cache issue on tester's side).",
+  "rca of the issue": "Previous iteration_6 tester likely hit a stale cache. This iteration used ?nocache=1 and ?nocache=2 query params, and networkidle wait. All markers verified visible in DOM and computed styles."
+}

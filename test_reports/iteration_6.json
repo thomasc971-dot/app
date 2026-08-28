@@ -1,0 +1,34 @@
+{
+  "summary": "Iteration 7 review: BACKEND OK (17/17 pytest pass, GET /api/ still returns metiers:100 secteurs:12). FRONTEND FAILURE: /app/frontend/src/pages/Metiers.jsx was NOT actually rewritten by main agent — the file on disk still contains the pre-iter7 implementation. All 8 frontend acceptance criteria fail because the code changes are entirely missing.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Metiers.jsx – filter bar", "issue": "Filters still use horizontal scroll container (flex gap-2 overflow-x-auto no-scrollbar) instead of flex-wrap with VISIBLE_FILTERS=7 + toggle. data-testid=filter-toggle-more is ABSENT from DOM.", "selector": "[data-testid=filter-toggle-more]", "priority": "HIGH"},
+      {"component": "Metiers.jsx – filter labels", "issue": "All 12 sector filter buttons still display emojis directly from backend s.label (e.g. '💻 Tech & Numérique', '🏥 Santé & Social', '🏗️ BTP & Industrie', ... 12/12). No stripEmoji helper is applied. Regex /\\p{Extended_Pictographic}/u matches on every filter.", "selector": "[data-testid^=filter-]", "priority": "HIGH"},
+      {"component": "Metiers.jsx – card secteur_label", "issue": "The <span> above the métier name still renders m.secteur_label raw (line 77) → shows '💻 TECH & NUMÉRIQUE' etc. Emoji not stripped on tiles.", "selector": "[data-testid^=metier-card-] span:first-child", "priority": "HIGH"},
+      {"component": "Metiers.jsx – motsCles chips", "issue": "Chips render {mk} directly (line 88). If any motsCle contains an emoji it is not stripped (helper missing). Present state: no chips observed with emoji, but stripEmoji safeguard requested is not implemented.", "selector": "[data-testid^=metier-card-] .rounded-full", "priority": "MEDIUM"},
+      {"component": "Metiers.jsx – tension badge", "issue": "'Forte demande' is still rendered INLINE at the BOTTOM of the card as small brick text (lines 92-96) with icon TrendingUp. Required redesign is missing: no absolute -top-2 left-4 floating badge, no Flame icon, no bg-brick pill, no uppercase font-semibold shadow-md, and no data-testid=`tension-badge-{slug}`. Query for [data-testid^=tension-badge-] returns 0 elements on the page.", "selector": "[data-testid^=tension-badge-]", "priority": "HIGH"},
+      {"component": "Metiers.jsx – card positioning", "issue": "The Link card wrapper has no `relative` class and no overflow-visible guard, so even if a floating -top-2 badge were added, the parent motion.div/Link would need relative positioning + overflow-visible.", "selector": "[data-testid^=metier-card-]", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/metiers filter bar", "issues": ["Horizontal scroll persists; last filter is clipped off-screen on 1920px viewport (screenshot confirmed 'Artisanat & Métiers manuels' cut). Wrap + Voir plus toggle would fix this."]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "MAIN AGENT: The claimed rewrite of /app/frontend/src/pages/Metiers.jsx was never actually persisted. Please write the file with: (1) stripEmoji helper using regex /\\p{Extended_Pictographic}\\s*/gu; (2) VISIBLE_FILTERS=7 constant with useState showAllFilters + button data-testid=filter-toggle-more toggling label 'Voir plus (N)' / 'Voir moins'; (3) filter container as flex flex-wrap gap-2 (drop overflow-x-auto); (4) apply stripEmoji to s.label AND m.secteur_label AND each motsCles chip; (5) rebuild tension badge as: <span data-testid={`tension-badge-${m.slug}`} className='absolute -top-2 left-4 inline-flex items-center gap-1 bg-brick text-cream text-[10px] uppercase font-semibold tracking-wide px-2.5 py-1 rounded-full shadow-md'><Flame size={12}/> Forte demande</span>; (6) add `relative` class to the Link card wrapper so the absolute badge anchors correctly; (7) import Flame from lucide-react.",
+    "MAIN AGENT: After write, verify the file actually saved (cat / view) — the last iteration apparently reported success without persisting."
+  ],
+  "critical_code_review_comments": [
+    "Backend /api/secteurs and /api/metiers still ship emojis inside labels. Fine to keep server-side, but confirms client-side stripping is the only path — helper MUST run on both filter list and card fields (secteur_label + motsCles).",
+    "Metiers.jsx is only ~110 lines — plenty of room to add helper + toggle logic without splitting."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "0%"},
+  "seed_data_creation": "none",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iter7 not implemented on disk despite main-agent claim. File /app/frontend/src/pages/Metiers.jsx currently at pre-iter7 state (see lines 53 overflow-x-auto, 57-61 raw s.label, 77 raw m.secteur_label, 92-96 inline bottom TrendingUp badge). Backend regression suite (17 tests) at /app/backend/tests/backend_test.py remains 100% green — re-run only if server.py changes.",
+  "rca of the issue": "Root cause: main agent's file write for Metiers.jsx did not take effect (possibly overwritten by hot-reload of a stale buffer or the write step was skipped in tool invocation). Reproduction: view /app/frontend/src/pages/Metiers.jsx — none of the promised markers (stripEmoji, VISIBLE_FILTERS, filter-toggle-more, tension-badge-demain-redesign, Flame import) are present. Mitigation: main agent must re-apply the full rewrite and verify via view_file after write."
+}
