@@ -34,6 +34,14 @@ export const Header = () => {
             </NavLink>
           ))}
         </nav>
+        <div className="hidden md:flex items-center gap-3">
+          <NavLink to="/creer-compte" data-testid="header-signin" className="font-body text-sm text-navy/70 hover:text-navy transition-colors">
+            Se connecter
+          </NavLink>
+          <NavLink to="/creer-compte" data-testid="header-signup" className="group inline-flex items-center gap-2 bg-brick text-cream rounded-full px-5 py-2.5 font-body font-semibold text-sm hover:bg-brick/90 transition-colors">
+            Créer un compte
+          </NavLink>
+        </div>
         <button
           data-testid="menu-toggle"
           onClick={() => setOpen(!open)}
@@ -56,6 +64,14 @@ export const Header = () => {
                 {n.label}
               </NavLink>
             ))}
+            <div className="pt-3 mt-2 border-t border-navy/10 flex flex-col gap-3">
+              <NavLink to="/creer-compte" onClick={() => setOpen(false)} className="font-body text-base text-navy py-2">
+                Se connecter
+              </NavLink>
+              <NavLink to="/creer-compte" onClick={() => setOpen(false)} className="inline-flex items-center justify-center gap-2 bg-brick text-cream rounded-full px-5 py-2.5 font-body font-semibold text-sm">
+                Créer un compte
+              </NavLink>
+            </div>
           </div>
         </div>
       )}

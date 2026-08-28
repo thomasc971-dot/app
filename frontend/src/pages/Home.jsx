@@ -26,27 +26,24 @@ const elision = (word) => /^[aeiouhéèêà]/i.test(word) ? "s'" : "se ";
 const RotatingWord = () => {
   const [i, setI] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setI(v => (v + 1) % ROTATING_VERBS.length), 2400);
+    const t = setInterval(() => setI(v => (v + 1) % ROTATING_VERBS.length), 3500);
     return () => clearInterval(t);
   }, []);
   const word = ROTATING_VERBS[i];
   return (
-    <span className="whitespace-nowrap">
-      Il {elision(word)}
-      <span className="relative inline-block align-baseline" style={{ minWidth: "6.5ch", height: "1em", verticalAlign: "baseline" }}>
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={word}
-            initial={{ y: "60%", opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: "-60%", opacity: 0 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fraunces-italic text-brick absolute left-0 top-0 whitespace-nowrap"
-          >
-            {word}
-          </motion.span>
-        </AnimatePresence>
-      </span>
+    <span className="inline-flex items-baseline">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={word}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -20, opacity: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="whitespace-nowrap"
+        >
+          Il {elision(word)}<span className="fraunces-italic text-brick">{word}</span>.
+        </motion.span>
+      </AnimatePresence>
     </span>
   );
 };
@@ -56,32 +53,32 @@ const Hero = () => (
   <section data-testid="hero" className="relative overflow-hidden pt-10 pb-16 md:pt-16 md:pb-24">
     <div className="container-md grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="lg:col-span-6 relative z-10">
-        <span className="inline-flex items-center gap-2 font-body text-xs uppercase tracking-[0.2em] text-brick mb-6">
+        <span className="inline-flex items-center gap-2 font-body text-sm font-medium tracking-tight text-brick mb-6">
           <span className="w-8 h-px bg-brick" /> Explorer. Décider. Construire demain.
         </span>
         <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-navy leading-[1.05] tracking-tight">
           Ton avenir ne se <span className="fraunces-italic">devine</span> pas.
           <br />
-          <RotatingWord />.
+          <RotatingWord />
         </h1>
-        <p className="font-body text-base md:text-lg text-navy/70 mt-6 max-w-xl leading-relaxed">
-          Simule des métiers, des villes, un budget — pour de vrai. Un espace pour toi, que tu aies 15 ans
-          ou que tu envisages une reconversion à 45.
+        <p className="font-body text-base md:text-lg text-neutral-800 mt-6 max-w-xl leading-relaxed">
+          Fiches métier détaillées, simulations de carrière et infos pratiques pour t'aider à choisir ta voie
+          ou à la changer. Pensé pour les lycéens en pleine orientation comme pour les adultes en reconversion.
         </p>
         <div className="flex flex-wrap gap-3 mt-8">
           <Link to="/trouve-ta-voie" data-testid="hero-cta-primary" className="group inline-flex items-center gap-2 bg-navy text-cream rounded-full px-7 py-4 font-body font-semibold text-sm tracking-wide hover:bg-navy-900 hover:shadow-lg hover:shadow-navy/20 transition-all duration-300">
             Commencer un parcours
             <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" size={16} />
           </Link>
-          <Link to="/metiers" data-testid="hero-cta-secondary" className="group inline-flex items-center gap-2 border border-navy/20 text-navy rounded-full px-7 py-4 font-body font-semibold text-sm tracking-wide hover:border-navy hover:bg-white transition-all duration-300">
-            Découvrir les métiers
+          <Link to="/creer-compte" data-testid="hero-cta-secondary" className="group inline-flex items-center gap-2 border border-navy/20 text-navy rounded-full px-7 py-4 font-body font-semibold text-sm tracking-wide hover:border-navy hover:bg-white transition-all duration-300">
+            Créer un compte gratuit
             <ArrowRight className="group-hover:translate-x-1 transition-transform" size={14} />
           </Link>
         </div>
         <div className="mt-10 flex items-center gap-6 text-xs font-body text-navy/50">
-          <span className="inline-flex items-center gap-2"><Star size={12} className="text-brick fill-brick" /> 100% gratuit</span>
+          <span className="inline-flex items-center gap-2"><Star size={12} className="text-brick fill-brick" /> Simulation gratuite</span>
           <span className="w-1 h-1 rounded-full bg-navy/20" />
-          <span>Sans inscription</span>
+          <span>Fiches métier détaillées</span>
           <span className="w-1 h-1 rounded-full bg-navy/20" />
           <span>2 min pour démarrer</span>
         </div>
@@ -132,17 +129,25 @@ const Hero = () => (
             </div>
           </div>
         </motion.div>
-        {/* Handwritten annotation — bottom-left */}
+        {/* Handwritten annotation + Se connecter target — bottom-left */}
         <motion.div
           initial={{ opacity: 0, rotate: -8, scale: 0.8 }}
           animate={{ opacity: 1, rotate: -6, scale: 1 }}
           transition={{ delay: 0.9, duration: 0.7 }}
-          className="absolute -bottom-2 left-2 lg:left-8 z-20 pointer-events-none"
+          className="absolute -bottom-6 left-2 lg:left-6 z-20 max-w-[300px]"
         >
-          <span className="font-script text-brick text-3xl md:text-4xl">essaie-le, pour de vrai</span>
-          <svg className="text-brick/70 -mt-2 ml-4" width="80" height="12" viewBox="0 0 80 12" fill="none">
-            <path d="M2 8C15 3 40 3 78 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <span className="font-script text-brick text-2xl md:text-3xl leading-tight block pointer-events-none">viens voir à quoi ça ressemble, vraiment</span>
+          <svg className="text-brick/80 mt-1 ml-8" width="90" height="30" viewBox="0 0 90 30" fill="none">
+            <path d="M2 4C15 8 45 14 55 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M50 18L56 23L52 28" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
+          <Link
+            to="/creer-compte"
+            data-testid="hero-annotation-signin"
+            className="inline-flex items-center gap-2 mt-1 ml-24 font-body font-semibold text-sm text-navy bg-white border border-navy/15 rounded-full px-4 py-2 hover:border-navy hover:shadow-md transition-all"
+          >
+            Se connecter <ArrowRight size={14} />
+          </Link>
         </motion.div>
       </div>
     </div>
@@ -179,7 +184,7 @@ const ExperiencesSection = () => {
                   </div>
                   <h3 className="font-heading text-3xl mt-10 leading-tight relative">{it.title}</h3>
                   <p className="font-body text-[11px] uppercase tracking-widest opacity-60 mt-2 relative">{it.tag}</p>
-                  <p className="font-body text-sm leading-relaxed mt-5 opacity-90 relative">{it.desc}</p>
+                  <p className="font-body text-sm leading-relaxed mt-5 opacity-95 relative">{it.desc}</p>
                   <div className="mt-8 inline-flex items-center gap-2 font-body text-sm font-semibold relative">
                     Explorer <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -201,40 +206,54 @@ const RaisonDetre = () => (
       <div className="lg:col-span-5 relative h-[380px] md:h-[440px]">
         <motion.img
           initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-          src={IMG.raison1}
-          alt="Transmission et évolution"
+          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
+          alt="Équipe professionnelle souriante au travail"
           className="absolute top-0 left-0 w-[72%] h-[68%] object-cover rounded-[1.75rem] shadow-2xl hover:scale-[1.02] transition-transform duration-500"
           style={{ transform: "rotate(-2deg)" }}
         />
         <motion.img
           initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.8 }}
-          src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=800&q=80"
-          alt="Reconversion et nouveaux départs"
+          src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80"
+          alt="Étudiants souriants en cours"
           className="absolute bottom-0 right-0 w-[58%] h-[52%] object-cover rounded-[1.75rem] shadow-2xl hover:scale-[1.02] transition-transform duration-500"
           style={{ transform: "rotate(3deg)" }}
         />
-        <motion.div
-          initial={{ opacity: 0, rotate: -10, scale: 0.8 }} whileInView={{ opacity: 1, rotate: -8, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.5, duration: 0.6 }}
-          className="absolute top-[45%] right-[10%] z-20 pointer-events-none"
-        >
-          <span className="font-script text-brick-soft text-3xl">à tout âge</span>
-        </motion.div>
       </div>
       <motion.div {...fadeUp} className="lg:col-span-7">
         <span className="font-body text-xs uppercase tracking-[0.2em] text-brick-soft">Notre raison d'être</span>
         <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl mt-3 leading-[1.1]">
-          On ne veut pas te <span className="fraunces-italic">vendre</span> un avenir.
-          <br />Juste t'aider à le <span className="fraunces-italic">choisir</span>.
+          On ne veut pas te <span className="fraunces-italic">vendre</span> un avenir,
+          juste t'aider à le <span className="fraunces-italic">choisir</span>.
         </h2>
         <p className="font-body text-base md:text-lg text-cream/80 mt-6 max-w-2xl leading-relaxed">
           « J'ai mis des années à comprendre ce que je voulais faire, faute d'avoir les bonnes infos au bon
-          moment. Moi Demain, c'est cette explication que j'aurais aimé avoir, offerte à qui en a besoin
-          aujourd'hui. »
+          moment. » Moi Demain, c'est cette explication que j'aurais aimé avoir, offerte à qui en a besoin
+          aujourd'hui.
         </p>
+        <div className="mt-6 inline-flex items-center gap-2 pointer-events-none">
+          <span className="font-script text-brick-soft text-3xl -rotate-3 inline-block">à tout âge</span>
+        </div>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Link
+            to="/metiers"
+            data-testid="raison-cta-metiers"
+            className="group inline-flex items-center gap-2 bg-cream text-navy rounded-full px-6 py-3 font-body font-semibold text-sm hover:scale-105 transition-transform"
+          >
+            Découvrir les métiers
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <Link
+            to="/a-propos"
+            className="group inline-flex items-center gap-2 border border-cream/25 text-cream rounded-full px-6 py-3 font-body font-semibold text-sm hover:bg-cream/5 transition-colors"
+          >
+            En savoir plus
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
         <div className="mt-10 grid grid-cols-3 gap-6 max-w-lg">
           <div><div className="font-heading text-3xl md:text-4xl text-brick-soft">100</div><div className="font-body text-[10px] uppercase tracking-widest text-cream/60 mt-1">métiers racontés</div></div>
           <div><div className="font-heading text-3xl md:text-4xl text-brick-soft">12</div><div className="font-body text-[10px] uppercase tracking-widest text-cream/60 mt-1">secteurs couverts</div></div>
-          <div><div className="font-heading text-3xl md:text-4xl text-brick-soft">100%</div><div className="font-body text-[10px] uppercase tracking-widest text-cream/60 mt-1">gratuit, sans compte</div></div>
+          <div><div className="font-heading text-3xl md:text-4xl text-brick-soft">1</div><div className="font-body text-[10px] uppercase tracking-widest text-cream/60 mt-1">compte, tout retrouvé</div></div>
         </div>
       </motion.div>
     </div>
@@ -361,8 +380,8 @@ const MiniSim = () => {
 // ============= RESSOURCES =============
 const Ressources = () => {
   const items = [
-    { title: "Comprendre ta 1re fiche de paie", desc: "Brut, net, cotisations, prélèvement à la source : chaque ligne expliquée en français normal.", tag: "Éducation financière" },
-    { title: "Bourses & aides : ce qui t'est dû", desc: "Bourse du lycée, Parcoursup, aides au logement, mobilité. La plupart passent à côté. Pas toi.", tag: "Aides" },
+    { title: "Comprendre ta 1ère fiche de paie", desc: "Brut, net, cotisations, prélèvement à la source : chaque ligne expliquée en français normal.", tag: "Éducation financière" },
+    { title: "Bourses & aides : ce qui t'es dû", desc: "Bourse du lycée, Parcoursup, aides au logement, mobilité. La plupart passent à côté. Pas toi.", tag: "Aides" },
     { title: "Étudier ou bosser à l'étranger", desc: "Erasmus, PVT, stages internationaux : démarches, budgets, pièges à éviter.", tag: "Mobilité" },
   ];
   return (
@@ -380,7 +399,7 @@ const Ressources = () => {
               <Link to="/ressources" className="group block bg-white rounded-[1.75rem] p-7 h-full border border-navy/5 hover:-translate-y-2 hover:shadow-xl transition-all duration-500">
                 <span className="font-body text-[11px] uppercase tracking-widest text-brick">{r.tag}</span>
                 <h3 className="font-heading text-2xl md:text-3xl text-navy mt-5 leading-tight">{r.title}</h3>
-                <p className="font-body text-sm text-navy/70 mt-3 leading-relaxed">{r.desc}</p>
+                <p className="font-body text-sm text-neutral-800 mt-3 leading-relaxed">{r.desc}</p>
                 <div className="mt-6 inline-flex items-center gap-2 font-body text-sm font-semibold text-navy">Lire <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" /></div>
               </Link>
             </motion.div>
