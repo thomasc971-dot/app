@@ -1,0 +1,93 @@
+{
+  "project_name": "Moi Demain",
+  "design_philosophy": "Human, modern, editorial, premium. Intergenerational appeal. 'Ton avenir ne se devine pas. Il s'essaie.' Avoid SaaS dashboard, childish, corporate, and AI slop aesthetics. It should feel like a high-end magazine guiding you towards your future.",
+  "theme": "Light mode primary with cream background (#FAF8F5) to maintain the warm, human, editorial feel.",
+  "typography": {
+    "import_url": "https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300..800&display=swap",
+    "fonts": {
+      "heading": "'Fraunces', serif",
+      "body": "'Manrope', sans-serif",
+      "script": "'Caveat', cursive"
+    },
+    "tokens": {
+      "h1": "font-heading text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-[#1E3A8A] leading-tight",
+      "h1_italic": "font-heading italic font-light",
+      "h2": "font-heading text-3xl md:text-4xl lg:text-5xl font-normal text-[#1E3A8A] tracking-tight",
+      "h3": "font-heading text-2xl md:text-3xl text-[#1E3A8A]",
+      "body": "font-body text-base md:text-lg text-[#475569] leading-relaxed",
+      "small": "font-body text-sm text-[#64748B]",
+      "button": "font-body text-base font-semibold tracking-wide"
+    }
+  },
+  "colors": {
+    "primary": "#1E3A8A",
+    "accent": "#B85C5C",
+    "background": "#FAF8F5",
+    "teal_discreet": "#14B8A6",
+    "text_main": "#1E3A8A",
+    "text_muted": "#475569",
+    "surface": "#FFFFFF",
+    "border_subtle": "rgba(30, 58, 138, 0.1)"
+  },
+  "spacing_and_layout": {
+    "spacing_scale": "Use generous spacing. Standard padding for main sections should be py-24 or py-32. Internal card padding should be p-8 or p-10.",
+    "container": "max-w-[1400px] mx-auto px-6 md:px-12",
+    "grid_system": "Use asymmetrical bento grids (e.g., col-span-8 and col-span-4) for editorial sections. Avoid boring symmetrical grids unless listing data."
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#1E3A8A] text-white rounded-full px-8 py-4 hover:bg-[#1E3A8A]/90 hover:scale-[1.02] transition-transform duration-300 shadow-[0_8px_20px_rgba(30,58,138,0.2)]",
+      "secondary": "bg-white text-[#1E3A8A] border border-[#1E3A8A]/20 rounded-full px-8 py-4 hover:bg-[#FAF8F5] transition-colors duration-300",
+      "accent": "bg-[#B85C5C] text-white rounded-full px-8 py-4 hover:bg-[#B85C5C]/90 hover:-translate-y-1 transition-all duration-300"
+    },
+    "cards": {
+      "floating_card": "bg-white rounded-[2rem] p-8 shadow-[0_20px_60px_rgba(30,58,138,0.06)] border border-[#1E3A8A]/5 hover:-translate-y-2 transition-transform duration-500",
+      "glass_card": "bg-white/70 backdrop-blur-xl border border-white/40 p-6 rounded-3xl shadow-sm"
+    },
+    "badges": "rounded-full px-4 py-1.5 text-sm font-semibold bg-[#1E3A8A]/5 text-[#1E3A8A] border border-[#1E3A8A]/10",
+    "filters": "pill-shaped tags, horizontal scrolling on mobile, bg-white border border-[#1E3A8A]/10 text-slate-600 hover:bg-[#FAF8F5] cursor-pointer transition-colors",
+    "forms": "minimalist inputs with soft rounded full borders (rounded-xl) bg-white p-4 focus:ring-2 focus:ring-[#1E3A8A]/20 outline-none transition-shadow",
+    "navigation": "Light header, sticky with glassmorphism (bg-[#FAF8F5]/80 backdrop-blur-md). Logo built with text: 'moi' in Caveat + 'demain' in Manrope + red dot.",
+    "modals": "Large rounded-[2rem] corners, plenty of white space, smooth fade and scale entrance."
+  },
+  "patterns": {
+    "hero_editorial": "Split composition. Left: Massive Fraunces typography ('Ton avenir ne se devine pas. Il s'essaie.'). Right: Overlapping photos of youth and adult, styled with slight rotations and abstract 3D elements overlapping the edges to create depth.",
+    "job_directory": "Annuaire métiers: Large search bar hero. Filters as pill tags. Grid of floating cards displaying job title (Fraunces), tags, salary. Mobile: vertical list with horizontal scroll filters.",
+    "job_sheet": "Fiche métier: 2-column layout on desktop. Left: Sticky nav and key stats (floating glass card). Right: Rich content sections (Quotidien, Missions) using large accordions and floating cards for 'Compétences'.",
+    "life_simulator": "Simulation de vie: Immersive split screen. Left side scrolling through choices (Métier, Ville, Rythme). Right side sticky visual 'Receipt' showing budget impact in real-time with smooth number counting animations.",
+    "quiz": "Trouve ta voie: Distraction-free interface. One question visible at a time. Large, touch-friendly floating cards for answers. Progress bar across the top."
+  },
+  "motion": {
+    "micro_interactions": "Hover states on all interactive elements. Cards lift slightly, buttons scale. Smooth easing.",
+    "scroll_animations": "Sections fade up with framer-motion as they enter the viewport. Staggered reveals for lists and grids."
+  },
+  "media": {
+    "guidelines": "Use real human photos representing multiple generations (youth and adults) mixed with 3D abstract clay elements to break the corporate feel.",
+    "image_urls": {
+      "youth_studying": "https://images.unsplash.com/photo-1514369118554-e20d93546b30",
+      "adult_professional": "https://images.unsplash.com/photo-1752856408620-2e6fc6ac072f",
+      "mature_learning": "https://images.unsplash.com/photo-1758685848006-1bc450061624",
+      "abstract_clay_1": "https://images.pexels.com/photos/7307644/pexels-photo-7307644.jpeg",
+      "abstract_clay_2": "https://images.unsplash.com/photo-1710244182004-1c708b3f146d"
+    }
+  },
+  "instructions_to_main_agent": [
+    "You are building a French app. Use the text and tone exactly as requested.",
+    "Create the logo using HTML/CSS: <span class='font-script text-2xl text-[#1E3A8A] mr-1'>moi</span><span class='font-body font-bold text-xl text-[#1E3A8A] tracking-tight'>demain<span class='text-[#B85C5C]'>.</span></span>",
+    "Use standard Javascript/JSX (no TypeScript).",
+    "Configure tailwind.config.js to include the specific colors and fonts (Fraunces, Manrope, Caveat). Extend the theme, do not overwrite completely.",
+    "Apply `bg-[#FAF8F5]` to the main body.",
+    "Implement the 5 core experiences for the first iteration: Homepage, Job Directory, Job Sheet, Simulator, Quiz.",
+    "Ensure 'data-testid' is present on all key interactive elements.",
+    "Use framer-motion for page transitions and scroll reveals."
+  ],
+  "universal_guidelines_for_main_agent": [
+    "Do not use generic SaaS aesthetics or heavy gradients. Stick to flat, solid premium colors and soft shadows.",
+    "Do not use complete transparent background in header or dropdowns; use glassmorphism (backdrop-blur).",
+    "Do not use `transition: all`. Be specific with transitions (e.g. `transition-transform`, `transition-colors`).",
+    "Spacing is critical. Use 2-3x more spacing than usual to create an editorial feel.",
+    "Do not center-align large blocks of text; left-align them for readability.",
+    "Do not use emojis for icons. Use lucide-react.",
+    "Ensure high contrast for text accessibility."
+  ]
+}
