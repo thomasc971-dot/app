@@ -19,28 +19,34 @@ const fadeUp = {
   transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
 };
 
-const ROTATING_VERBS = ["essaie", "imagine", "invente", "explore"];
+const ROTATING_VERBS = ["essaie", "imagine", "invente", "explore", "construit"];
+// Élision : "s'" devant voyelle/h muet, "se" devant consonne
+const elision = (word) => /^[aeiouhéèêà]/i.test(word) ? "s'" : "se ";
 
 const RotatingWord = () => {
   const [i, setI] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setI(v => (v + 1) % ROTATING_VERBS.length), 2200);
+    const t = setInterval(() => setI(v => (v + 1) % ROTATING_VERBS.length), 2400);
     return () => clearInterval(t);
   }, []);
+  const word = ROTATING_VERBS[i];
   return (
-    <span className="relative inline-block align-baseline overflow-hidden" style={{ minWidth: "5.5ch" }}>
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={ROTATING_VERBS[i]}
-          initial={{ y: "100%", opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: "-100%", opacity: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="fraunces-italic inline-block"
-        >
-          {ROTATING_VERBS[i]}
-        </motion.span>
-      </AnimatePresence>
+    <span className="whitespace-nowrap">
+      Il {elision(word)}
+      <span className="relative inline-block align-baseline" style={{ minWidth: "6.5ch", height: "1em", verticalAlign: "baseline" }}>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={word}
+            initial={{ y: "60%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "-60%", opacity: 0 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="fraunces-italic text-brick absolute left-0 top-0 whitespace-nowrap"
+          >
+            {word}
+          </motion.span>
+        </AnimatePresence>
+      </span>
     </span>
   );
 };
@@ -54,9 +60,9 @@ const Hero = () => (
           <span className="w-8 h-px bg-brick" /> Explorer. Décider. Construire demain.
         </span>
         <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-navy leading-[1.05] tracking-tight">
-          Ton avenir ne se <span className="fraunces-italic text-brick">devine</span> pas.
+          Ton avenir ne se <span className="fraunces-italic">devine</span> pas.
           <br />
-          Il s'<RotatingWord />.
+          <RotatingWord />.
         </h1>
         <p className="font-body text-base md:text-lg text-navy/70 mt-6 max-w-xl leading-relaxed">
           Simule des métiers, des villes, un budget — pour de vrai. Un espace pour toi, que tu aies 15 ans
@@ -235,6 +241,62 @@ const RaisonDetre = () => (
   </section>
 );
 
+// ============= PROFIL ENTRY (remplace mini-sim, fidèle HTML v145) =============
+const ProfilEntry = () => {
+  const [prenom, setPrenom] = useState("");
+  const profils = [
+    { key: "idee", emoji: "🎯", titre: "Je sais déjà", desc: "J'ai une idée assez précise en tête", to: "/trouve-ta-voie" },
+    { key: "perdu", emoji: "🤷", titre: "Aucune idée", desc: "Et ça me questionne, franchement", to: "/trouve-ta-voie" },
+    { key: "depend", emoji: "🎲", titre: "Ça dépend des jours", desc: "Parfois oui, parfois plus du tout", to: "/trouve-ta-voie" },
+  ];
+  return (
+    <section data-testid="profil-entry" className="py-16 md:py-24 bg-cream-dark/40">
+      <div className="container-md">
+        <motion.div {...fadeUp} className="max-w-3xl mx-auto text-center">
+          <span className="font-body text-xs uppercase tracking-[0.2em] text-navy/50">On te l'a sûrement déjà demandé cent fois</span>
+          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl text-navy mt-4 leading-[1.1]">
+            Qu'est-ce que tu aimerais faire <span className="fraunces-italic text-brick">plus tard</span> ?
+          </h2>
+          <p className="font-body text-navy/70 mt-6 max-w-xl mx-auto leading-relaxed">
+            Cette question, tout le monde te la pose depuis que tu es petit·e. Cette fois, au lieu d'y répondre
+            en l'air, viens vraiment tester ta réponse.
+          </p>
+        </motion.div>
+
+        <motion.div {...fadeUp} className="max-w-xl mx-auto mt-10 flex flex-col sm:flex-row items-center gap-4">
+          <input
+            data-testid="profil-prenom"
+            value={prenom}
+            onChange={(e) => setPrenom(e.target.value)}
+            placeholder="Ton prénom (facultatif)"
+            className="w-full sm:flex-1 bg-white rounded-full px-6 py-3.5 font-body text-navy border border-navy/10 focus:ring-2 focus:ring-navy/20 outline-none placeholder:text-navy/40"
+          />
+          <span className="font-body text-xs text-navy/50 text-center sm:text-left">On s'en sert juste pour personnaliser ta visite</span>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-10 max-w-5xl mx-auto">
+          {profils.map((p, i) => (
+            <motion.div key={p.key} {...fadeUp} transition={{ ...fadeUp.transition, delay: i * 0.08 }}>
+              <Link
+                to={`${p.to}${prenom ? `?prenom=${encodeURIComponent(prenom)}` : ""}&profil=${p.key}`}
+                data-testid={`profil-${p.key}`}
+                className="group block bg-white rounded-[1.5rem] p-8 text-center border border-navy/5 hover:-translate-y-2 hover:shadow-xl hover:border-brick/20 transition-all duration-500"
+              >
+                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform inline-block">{p.emoji}</div>
+                <h3 className="font-heading text-2xl text-navy">{p.titre}</h3>
+                <p className="font-body text-sm text-navy/60 mt-3 leading-relaxed">{p.desc}</p>
+                <div className="mt-6 inline-flex items-center gap-2 font-body text-sm font-semibold text-brick opacity-0 group-hover:opacity-100 transition-opacity">
+                  Commencer <ArrowRight size={14} />
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // ============= MINI SIMULATION =============
 const MiniSim = () => {
   const [metiers, setMetiers] = useState([]);
@@ -357,7 +419,7 @@ export default function Home() {
       <Hero />
       <ExperiencesSection />
       <RaisonDetre />
-      <MiniSim />
+      <ProfilEntry />
       <Ressources />
       <FinalCTA />
     </div>
