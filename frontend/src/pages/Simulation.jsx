@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, Briefcase, Home as HomeIcon, Wallet } from "lucide-react";
@@ -16,8 +16,23 @@ export default function Simulation() {
   const [rythme, setRythme] = useState("equilibre");
   const [preview, setPreview] = useState(null);
 
-  useEffect(() => { fetchMetiers({ limit: 100 }).then(d => { setMetiers(d.items); if (d.items[0]) setMetier(d.items[0].slug); }); }, []);
-  useEffect(() => { if (metier) fetchSimPreview({ metier, ville }).then(setPreview); }, [metier, ville]);
+  // Wrapped in useCallback so the effect below has a stable reference to
+  // depend on — avoids the missing-dependency / stale-closure warning
+  // while still only running once on mount (metiers/setMetier don't change).
+  const loadMetiers = useCallback(() => {
+    fetchMetiers({ limit: 100 }).then((d) => {
+      setMetiers(d.items);
+      if (d.items[0]) setMetier(d.items[0].slug);
+    });
+  }, []);
+
+  useEffect(() => { loadMetiers(); }, [loadMetiers]);
+
+  const loadPreview = useCallback(() => {
+    if (metier) fetchSimPreview({ metier, ville }).then(setPreview);
+  }, [metier, ville]);
+
+  useEffect(() => { loadPreview(); }, [loadPreview]);
 
   const rythmeImpact = rythme === "epargne" ? -150 : rythme === "kif" ? +100 : 0;
   const resteFinal = preview ? Math.max(preview.reste_a_vivre - rythmeImpact, 0) : 0;
