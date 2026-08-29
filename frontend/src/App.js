@@ -9,6 +9,7 @@ import MetierDetail from "@/pages/MetierDetail";
 import TrouveTaVoie from "@/pages/TrouveTaVoie";
 import Simulation from "@/pages/Simulation";
 import Immersion from "@/pages/Immersion";
+import CreerCompte from "@/pages/CreerCompte";
 import { Ressources, APropos } from "@/pages/Placeholder";
 import Tarifs from "@/pages/Tarifs";
 import TarifsParticuliers from "@/pages/TarifsParticuliers";
@@ -30,6 +31,7 @@ function App() {
             <Route path="/trouve-ta-voie" element={<TrouveTaVoie />} />
             <Route path="/simulation" element={<Simulation />} />
             <Route path="/immersion" element={<Immersion />} />
+            <Route path="/creer-compte" element={<CreerCompte />} />
             <Route path="/ressources" element={<Ressources />} />
             <Route path="/tarifs" element={<Tarifs />} />
             <Route path="/tarifs/particuliers" element={<TarifsParticuliers />} />
