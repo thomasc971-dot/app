@@ -11,6 +11,13 @@ import Simulation from "@/pages/Simulation";
 import Immersion from "@/pages/Immersion";
 import CreerCompte from "@/pages/CreerCompte";
 import { Ressources, APropos } from "@/pages/Placeholder";
+import Aides from "@/pages/Aides";
+import FichePaie from "@/pages/FichePaie";
+import MobiliteFrance from "@/pages/MobiliteFrance";
+import Expatriation from "@/pages/Expatriation";
+import Comparateur from "@/pages/Comparateur";
+import Faq from "@/pages/Faq";
+import Organismes from "@/pages/Organismes";
 import Tarifs from "@/pages/Tarifs";
 import TarifsParticuliers from "@/pages/TarifsParticuliers";
 import TarifsEtablissements from "@/pages/TarifsEtablissements";
@@ -33,6 +40,13 @@ function App() {
             <Route path="/immersion" element={<Immersion />} />
             <Route path="/creer-compte" element={<CreerCompte />} />
             <Route path="/ressources" element={<Ressources />} />
+            <Route path="/aides" element={<Aides />} />
+            <Route path="/fiche-paie" element={<FichePaie />} />
+            <Route path="/mobilite-france" element={<MobiliteFrance />} />
+            <Route path="/expatriation" element={<Expatriation />} />
+            <Route path="/comparateur" element={<Comparateur />} />
+            <Route path="/faq" element={<Faq />} />
+            <Route path="/organismes" element={<Organismes />} />
             <Route path="/tarifs" element={<Tarifs />} />
             <Route path="/tarifs/particuliers" element={<TarifsParticuliers />} />
             <Route path="/tarifs/etablissements" element={<TarifsEtablissements />} />

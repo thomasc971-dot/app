@@ -1,0 +1,62 @@
+{
+  "summary": "Iteration 13 — Integration massive validee cote backend et globalement cote frontend. Backend 17/17 pytest OK (dont nouveau check famille_id/famille_label/formations dans projection /api/metiers). GET /api/ retourne toujours metiers=100 secteurs=12 (reseed sans perte). Frontend compile sans erreur, toutes les 24 routes repondent 200 sans 'Failed to compile'. Header conforme option C (7 liens: Metiers/Trouve ta voie/Simulation/Immersion/Ressources/Tarifs/A propos + Se connecter/Creer un compte, PAS de Comparateur/FAQ/Organismes). Home intacte (hero, experiences, raison-detre 2 photos, profil-entry Target/HelpCircle/Shuffle, ressources 1ere fiche + t'es du, tagline case normale, annotation signin). Metiers.jsx version validee CONSERVEE: 100 metier-cards, filter-toggle-more present, 33 tension-badge-<slug>. TTV /simulation /immersion sont des parcours multi-etapes interactifs (landing puis choix -> etapes suivantes, verifie manuellement). Aides/FichePaie/Expatriation richement peuples. UN BUG CRITIQUE identifie sur les cartes Ressources (voir frontend_issues).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Page /ressources -> cartes 'Comprendre ta 1re fiche de paie' / 'Bourses & aides' / 'Bouger en France'",
+        "issue": "Les 3 cartes pointent vers /ressources/fiche-paie, /ressources/aides, /ressources/mobilite-france — routes INEXISTANTES dans App.js (declarees en tant que /fiche-paie, /aides, /mobilite-france). Resultat : au clic, page vide (uniquement Header + Footer, main renderless). Bug critique de navigation. Fix : dans /app/frontend/src/pages/Placeholder.jsx (lignes 21/27/33), remplacer to:'/ressources/fiche-paie' par to:'/fiche-paie', idem pour aides et mobilite-france.",
+        "affected_selectors": ["/ressources cards Link href"]
+      },
+      {
+        "flow": "Page /ressources — cartes exposees",
+        "issue": "Seules 3 cartes sont listees (FichePaie / Aides / MobiliteFrance). La review request evoque aussi Expatriation/Comparateur/FAQ/Organismes comme cibles depuis /ressources — non presents. A confirmer avec E1 s'il veut ajouter ces cartes.",
+        "affected_selectors": ["Placeholder.jsx Ressources RES array"]
+      }
+    ],
+    "design_issues": []
+  },
+  "acceptance_checks": {
+    "backend_root_counts": "PASS metiers=100 secteurs=12",
+    "backend_metiers_enriched": "PASS famille_id non null, famille_label string non vide, formations array present",
+    "backend_metier_detail": "PASS /api/metiers/tech-developpeurse-web 200 + related=6",
+    "frontend_no_compile_error": "PASS aucune trace 'Failed to compile' ou 'Module not found' dans supervisor frontend.err.log",
+    "route_/trouve-ta-voie": "PASS parcours interactif (question initiale short/long term -> ecran suivant 9 situations d'age)",
+    "route_/simulation": "PASS data-testid=simulation-page",
+    "route_/immersion": "PASS landing IMMERSION PRO + CTA 'Lancer mon immersion' (7 etapes revelees apres clic)",
+    "route_/aides": "PASS data-testid=aides-page + liste aides rendues (APL, Mobili-Jeune, Garantie Visale, etc.)",
+    "route_/fiche-paie": "PASS 200 rendu (body 4954 chars, simulateur present)",
+    "route_/mobilite-france": "PASS 200 rendu",
+    "route_/expatriation": "PASS 200 rendu (8580 chars — 3 dispositifs/6 etapes/12 destinations)",
+    "route_/comparateur /faq /organismes": "PASS 200 rendus",
+    "header_option_C": "PASS liens exacts: Metiers, Trouve ta voie, Simulation, Immersion, Ressources, Tarifs, A propos + Se connecter + Creer un compte — aucun Comparateur/FAQ/Organismes",
+    "routes_iter11_preservees": "PASS /creer-compte /tarifs /tarifs/particuliers /tarifs/etablissements /tarifs/entreprises /contact-commercial /moi-demain-plus tous 200",
+    "home_iter12_preservees": "PASS hero, experiences, raison-detre (2 photos), profil-entry, ressources-home, hero-annotation-signin, raison-cta-metiers, hero-cta-secondary tous presents",
+    "metiers_page_features_conservees": "PASS filter-toggle-more present, 33 tension-badge-<slug> visibles, 100 metier-cards",
+    "ressources_cards_redirect": "FAIL cartes pointent vers /ressources/<x> (routes inexistantes) au lieu de /<x>"
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "CRITIQUE — Corriger /app/frontend/src/pages/Placeholder.jsx (composant Ressources, tableau RES lignes ~21/27/33) : remplacer 'to: /ressources/fiche-paie' par 'to: /fiche-paie', 'to: /ressources/aides' par 'to: /aides', 'to: /ressources/mobilite-france' par 'to: /mobilite-france' afin que les cartes rejoignent bien les routes declarees dans App.js.",
+    "OPTIONNEL — Decider si /ressources doit exposer 4 cartes supplementaires (Expatriation / Comparateur / FAQ / Organismes) ou rester a 3 (FichePaie / Aides / MobiliteFrance)."
+  ],
+  "critical_code_review_comments": [
+    "Placeholder.jsx heberge trois pages (Ressources, APropos, ...) — quand le volume grandira, envisager de scinder chaque page dans son propre fichier pour la coherence avec les nouveaux fichiers Aides.jsx/FichePaie.jsx/etc.",
+    "Header.jsx : pas de data-testid sur les liens de nav individuels (seulement nav-tarifs/header-signin/header-signup). Ajouter data-testid=nav-<slug> aiderait les tests futurs mais non bloquant.",
+    "Placeholder.jsx est utilise a la fois pour Ressources et APropos alors que des pages standalone existent pour les autres — inconsistance de convention."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py (ajout assertions famille_id/famille_label/formations dans TestMetiersList.test_all_metiers)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "95%"},
+  "test_credentials": "N/A",
+  "seed_data_creation": "Aucune",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Iter 13 : le seul bug bloquant est la redirection des 3 cartes /ressources (paths /ressources/xxx au lieu de /xxx). Une fois patchee dans Placeholder.jsx, revalider les 3 flux (clic carte -> arrivee sur /aides, /fiche-paie, /mobilite-france avec contenu rendu). Tout le reste est conforme (backend 17/17, Header option C, Metiers preserved, homepage intacte, 24 routes 200 sans erreur de compile, backend enrichi famille_id/famille_label/formations).",
+  "rca of the issue": "Le composant Ressources dans /app/frontend/src/pages/Placeholder.jsx definit un tableau RES avec des `to` prefixe /ressources/... probablement herite d'une ancienne convention de sous-routes. App.js iter13 declare les nouvelles pages a la racine (/fiche-paie, /aides, /mobilite-france). Le mismatch route -> le <Route> ne matche pas et Routes rend null (Header+Footer only). Mitigation : editer les 3 chaines to dans Placeholder.jsx lignes 21/27/33 en retirant le prefixe /ressources."
+}

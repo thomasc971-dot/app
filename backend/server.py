@@ -186,7 +186,8 @@ async def list_metiers(
         rx = re.compile(re.escape(q), re.I)
         filt["$or"] = [{"nom": rx}, {"motsCles": rx}, {"secteur_label": rx}]
     cursor = db.metiers.find(filt, {"_id": 0, "slug": 1, "nom": 1, "secteur_id": 1,
-                                     "secteur_label": 1, "salaireDebutant": 1, "motsCles": 1,
+                                     "secteur_label": 1, "famille_id": 1, "famille_label": 1,
+                                     "salaireDebutant": 1, "formations": 1, "motsCles": 1,
                                      "tensionScore": 1, "insight": 1}).skip(skip).limit(limit)
     docs = await cursor.to_list(limit)
     total = await db.metiers.count_documents(filt)

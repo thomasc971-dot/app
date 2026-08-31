@@ -52,8 +52,13 @@ class TestMetiersList:
         assert d["total"] == 100
         assert len(d["items"]) == 100
         it = d["items"][0]
-        for k in ("slug", "nom", "secteur_id", "secteur_label", "salaireDebutant", "motsCles", "tensionScore"):
+        for k in ("slug", "nom", "secteur_id", "secteur_label", "salaireDebutant", "motsCles", "tensionScore",
+                  "famille_id", "famille_label", "formations"):
             assert k in it, f"missing key {k} in items"
+        # New enriched fields
+        assert it["famille_id"] is not None
+        assert isinstance(it["famille_label"], str) and it["famille_label"]
+        assert isinstance(it["formations"], list)
 
     def test_filter_tech(self, client):
         r = client.get(f"{API}/metiers", params={"secteur": "tech", "limit": 500})

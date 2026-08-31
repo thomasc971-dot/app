@@ -13,6 +13,52 @@ const sanitize = (html) =>
     ALLOWED_ATTR: ["href", "target", "rel"],
   });
 
+// Les 3 outils interactifs mis en avant sur la page Ressources, chacun
+// menant vers sa propre page dédiée (simulateur fiche de paie, filtrage
+// des aides par profil, mobilité en France).
+const RESSOURCES_OUTILS = [
+  {
+    to: "/ressources/fiche-paie",
+    icon: "📄",
+    titre: "Comprendre ta 1re fiche de paie",
+    desc: "Brut, net, cotisations, prélèvement à la source : chaque ligne expliquée en français normal, avec un vrai exemple.",
+  },
+  {
+    to: "/ressources/aides",
+    icon: "🎓",
+    titre: "Bourses & aides : ce qui t'est dû",
+    desc: "Bourse du lycée, Parcoursup, aides au logement, mobilité... La plupart des jeunes passent à côté. Pas toi.",
+  },
+  {
+    to: "/ressources/mobilite-france",
+    icon: "🗺️",
+    titre: "Bouger en France",
+    desc: "Changer de région ou de ville peut ouvrir autant d'opportunités qu'un départ à l'étranger. Découvre 10 villes.",
+  },
+];
+
+function OutilsGrid() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {RESSOURCES_OUTILS.map((o) => (
+        <Link
+          key={o.to}
+          to={o.to}
+          data-testid={`ressource-card-${o.to.split("/").pop()}`}
+          className="group bg-white rounded-[1.5rem] p-6 border border-navy/5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 flex flex-col"
+        >
+          <div className="w-11 h-11 rounded-xl bg-teal-50 flex items-center justify-center text-xl mb-4">{o.icon}</div>
+          <h3 className="font-heading text-lg text-navy leading-snug">{o.titre}</h3>
+          <p className="font-body text-sm text-navy/60 mt-2.5 leading-relaxed flex-1">{o.desc}</p>
+          <div className="mt-4 inline-flex items-center gap-1.5 font-body text-sm font-semibold text-navy">
+            Lire <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 function AidesGrid({ aides }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -71,6 +117,12 @@ export const Ressources = () => {
       </section>
 
       <section>
+        <div className="container-md">
+          <OutilsGrid />
+        </div>
+      </section>
+
+      <section className="mt-16">
         <div className="container-md">
           <h2 className="font-heading text-3xl text-navy mb-8">Aides & bourses</h2>
           <AidesGrid aides={aides} />
