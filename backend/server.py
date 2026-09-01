@@ -25,7 +25,6 @@ def slugify(text: str) -> str:
     t = re.sub(r'[^a-zA-Z0-9]+', '-', t).strip('-').lower()
     return t or 'item'
 
-
 # ---------- SEED ----------
 async def seed_data():
     """Load source_data.json (extracted from HTML v145) and seed MongoDB once."""
@@ -36,7 +35,7 @@ async def seed_data():
 
     src_path = ROOT_DIR / 'source_data.json'
     if not src_path.exists():
-        logger.warning("source_data.json missing — no seed performed")
+        logger.warning("source_data.json missing - no seed performed")
         return
 
     with open(src_path, 'r', encoding='utf-8') as f:
